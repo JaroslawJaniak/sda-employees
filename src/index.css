@@ -1,0 +1,12 @@
+body {
+  font-family: "Courier New", monospace;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.title-project {
+  font-family: fantasy;
+  width: 512px;
+}
