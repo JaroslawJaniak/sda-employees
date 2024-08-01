@@ -4,8 +4,12 @@ import App from "./App.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
+import { EmployeesProvider } from "./context/EmployeesContext.tsx";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <EmployeesProvider>
+      <App />
+    </EmployeesProvider>
   </React.StrictMode>
 );

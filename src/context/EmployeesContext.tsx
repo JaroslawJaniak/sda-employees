@@ -1,15 +1,51 @@
-import { Table } from "./components/Table";
-import { Employee } from "./models/Employee";
-import { Form } from "./components/Form";
-import "./App.css";
+import React, { createContext, useContext, useState } from "react";
+import { Employee } from "../models/Employee";
 
-import { useContext } from "react";
-import { EmployeesContext } from "./context/EmployeesContext";
+type EmployeesContextType = {
+  employees: Employee[] | null;
+  setEmployees: (employees: Employee[] | null) => void;
+  employee: Employee | null;
+  setEmployee: (employee: Employee | null) => void;
+  filterById: (id: string) => void;
+  isOpenFormEditData: boolean;
+  setIsOpenFormEditData: (status: boolean) => void;
+};
 
-function App() {
-  const mockData: Employee[] = [
+export const EmployeesContext = createContext<EmployeesContextType | undefined>(
+  undefined
+);
+
+export const useEmployeeContext = () => {
+  const context = useContext(EmployeesContext);
+  if (!context) {
+    throw new Error(
+      "useEmployeeContext must be used within a EmployeeProvider"
+    );
+  }
+  return context;
+};
+
+export const EmployeesProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const filterById = (id: string) => {
+    const filteredEmployees: Employee[] | undefined = employees?.filter(
+      (item) => item.id === id
+    );
+    if (filteredEmployees?.length) {
+      setEmployee(filteredEmployees[0]);
+    } else {
+      setEmployee(null); // or handle the case where no user or multiple users are found
+    }
+
+    console.log(employee);
+  };
+
+  const [isOpenFormEditData, setIsOpenFormEditData] = useState<boolean>(false);
+  const [employee, setEmployee] = useState<Employee | null>(null);
+  const [employees, setEmployees] = useState<Employee[] | null>([
     {
-      id: "a29dgfgdf",
+      id: "a29",
       firstname: "John",
       lastname: "Doe",
       salary: 999,
@@ -28,7 +64,7 @@ function App() {
       status: "?",
       phonenumber: "545-122-563",
       address: "string",
-      city: "string",
+      city: "Washingtone",
       zip: "string",
       dateofbirth: "date",
     },
@@ -93,24 +129,21 @@ function App() {
       zip: "string",
       dateofbirth: "date",
     },
-  ];
+  ]);
 
-  const context = useContext(EmployeesContext);
+  const context = {
+    employees,
+    setEmployees,
+    employee,
+    setEmployee,
+    filterById,
+    isOpenFormEditData,
+    setIsOpenFormEditData,
+  };
 
   return (
-    <>
-      <main className="container bg-white p-5 border border-top-0 border-bottom-0 border-secondary border-4">
-        <h1 className="pt-4 pb-4 mx-auto title-project">
-          Employees List - React App
-        </h1>
-        <section className={context?.isOpenFormEditData ? "blur" : "clear"}>
-          <Table data={mockData} />
-        </section>
-
-        <Form hidden={!context?.isOpenFormEditData} />
-      </main>
-    </>
+    <EmployeesContext.Provider value={context}>
+      {children}
+    </EmployeesContext.Provider>
   );
-}
-
-export default App;
+};

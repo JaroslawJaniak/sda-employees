@@ -1,0 +1,5 @@
+.fixed {
+  position: fixed;
+  top: 200px;
+  width: 40vw;
+}

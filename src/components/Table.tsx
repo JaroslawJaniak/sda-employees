@@ -1,5 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Employee } from "../models/Employee";
+import { DataView } from "./DataView";
+
+import { EmployeesContext } from "../context/EmployeesContext";
+
+import "./Collapsible.css";
 
 interface TableProps {
   data: Employee[];
@@ -11,6 +16,13 @@ export function Table({ data }: TableProps) {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc" | null>(
     null
   );
+  const [isDataViewOpen, setDataViewIsOpen] = useState(false);
+
+  const toggleCollapse = () => {
+    setDataViewIsOpen(true);
+  };
+
+  const context = useContext(EmployeesContext);
 
   const ascSvg = (
     <svg
@@ -48,7 +60,6 @@ export function Table({ data }: TableProps) {
         fill="currentColor"
       />
     </svg>
-    
   );
 
   const handleSearchType = (event: React.KeyboardEvent | React.ChangeEvent) => {
@@ -133,8 +144,6 @@ export function Table({ data }: TableProps) {
     } else {
       return "";
     }
-
-   
   };
 
   return (
@@ -147,7 +156,7 @@ export function Table({ data }: TableProps) {
           className="form-control"
         />
       </div>
-      <table className="table table-hover table-responsive shadow p-3 mb-5 bg-body-tertiary rounded">
+      <table className="table table-hover table-responsive shadow p-3 mb-5 bg-body-tertiary ">
         <thead className="table-dark">
           <tr>
             <th
@@ -183,8 +192,18 @@ export function Table({ data }: TableProps) {
           </tr>
         </thead>
         <tbody className="table-group-divider">
-          {displayData.map((item, index) => (
-            <tr className="cursor-pointer">
+          {displayData.map((item) => (
+            <tr
+              className="cursor-pointer"
+              onClick={() => {
+                toggleCollapse();
+                context?.filterById(item.id);
+              }}
+              data-bs-toggle="collapse"
+              data-bs-target="#multiCollapseExample"
+              aria-expanded="false"
+              aria-controls="multiCollapseExample"
+            >
               <td>{item.id}</td>
               <td>{item.firstname}</td>
               <td>{item.lastname}</td>
@@ -194,6 +213,12 @@ export function Table({ data }: TableProps) {
           ))}
         </tbody>
       </table>
+      <DataView isOpen={isDataViewOpen} setIsOpen={setDataViewIsOpen} />
     </>
   );
 }
+
+/**
+ *
+ * <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample" aria-expanded="false" aria-controls="multiCollapseExample">Toggle second element</button>
+ */

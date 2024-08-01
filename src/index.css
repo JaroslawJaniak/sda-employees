@@ -1,12 +1,43 @@
 body {
   font-family: "Courier New", monospace;
+  background-repeat: repeat;
+  background-position: right;
+  background-size: cover;
+  
+  background-image: url("/src/assets/image-from-rawpixel-id-4021691-jpeg.jpg");;
+}
+
+main {
+  height: 100vh;
+  background-color: white;
+}
+
+.blur {
+  filter: blur(20px);
+}
+
+.clear {
+  filter: blur(0px);
 }
 
 .cursor-pointer {
   cursor: pointer;
 }
 
+
 .title-project {
   font-family: fantasy;
   width: 512px;
+}
+
+.collapsible {
+  position: relative;
+  width: 70vmin;
+  height: 24vmin;
+
+  background-position: left bottom;
+  background-position: center;
+
+  background-image: url("/src/assets/asset6.png");
+  box-shadow: -0px 16px 30px 0 black;
 }

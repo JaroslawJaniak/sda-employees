@@ -5,4 +5,8 @@ export interface Employee {
   salary: number;
   status: string;
   phonenumber: string;
+  address: string
+  city: string
+  zip: string
+  dateofbirth: string
 }

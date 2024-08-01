@@ -1,0 +1,16 @@
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition:all  1.5s ease-out;
+}
+
+.collapsible-content.open {
+  max-height: 800px; /* Set max height large enough to accommodate content */
+  border: 8px solid red;
+}
+
+.collapsible-content.closed {
+  max-height: 0;
+}
+
+
